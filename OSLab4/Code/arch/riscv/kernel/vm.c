@@ -41,7 +41,7 @@ void setup_vm_final(void) {
     create_mapping(swapper_pg_dir, _srodata, _srodata-PA2VA_OFFSET, (unsigned long)_sdata-(unsigned long)_srodata, 3);
     
     // mapping other memory -|W|R|V
-    create_mapping(swapper_pg_dir, _sdata, _sdata-PA2VA_OFFSET, PHY_SIZE-PGROUNDUP(0x3000), 7);
+    create_mapping(swapper_pg_dir, _sdata, _sdata-PA2VA_OFFSET, PHY_SIZE-PGROUNDUP(0x203000), 7);
     
     // set satp with swapper_pg_dir
     
