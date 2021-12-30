@@ -4,7 +4,7 @@
 _traps:
     # YOUR CODE HERE
     # -----------
-    # 1. save 32 registers and sepc to stack
+    # 1. save 1~31 registers and sepc, sstatus to stack
     addi x2, x2, -256
     sd x1, 0(x2)
     sd x2, 8(x2)
@@ -41,8 +41,11 @@ _traps:
     sd t0, 248(x2)
     csrr t0, sstatus
     sd t0, 256(x2)
+    # leave a 64bits space for x0(although we never sd it)
     addi sp, sp, -8
+    # save sp to a2 to pass it to the trap_handler()
     mv a2, sp
+    # no need to change sp if sscratch = 0
     csrr t0, sscratch
     beqz t0, noUser1
     csrrw sp, sscratch, sp
@@ -52,6 +55,7 @@ noUser1:
     csrr a0, scause
     csrr a1, sepc
     call trap_handler
+    # no need to change sp if sscratch = 0
     csrr t0, sscratch
     beqz t0, noUser2
     csrrw sp, sscratch, sp
@@ -59,6 +63,8 @@ noUser1:
     # 3. restore sepc and 32 registers (x2(x2) should be restore last) fromstack
 noUser2:
     addi x2, x2, 8
+    ld t0, 256(x2)
+    csrw sstatus, t0
     ld t0, 248(x2)
     csrw sepc, t0
     ld x1, 0(x2)

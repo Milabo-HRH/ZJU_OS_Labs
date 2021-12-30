@@ -108,7 +108,7 @@ void schedule(void) {
     if (task[shortest]->counter <= 0) {
         for (int i = 1; i < NR_TASKS; ++i) {
             task[i]->counter = rand();
-            printk("SET [PID = %d COUNTER = %d]\n", i, task[i]->counter);
+            // printk("SET [PID = %d COUNTER = %d]\n", i, task[i]->counter);
         }
         shortest = 0;
         for (int i = 1; i < NR_TASKS; ++i) {
@@ -119,7 +119,7 @@ void schedule(void) {
                 }
         }
     }
-    printk("switch to [PID = %d COUNTER = %d]\n", shortest, task[shortest]->counter);
+    // printk("switch to [PID = %d COUNTER = %d]\n", shortest, task[shortest]->counter);
     switch_to(task[shortest]);
 }
 #else
@@ -142,11 +142,11 @@ void schedule(void) {
             if (task[i]->state == TASK_RUNNING) {
                 (task[i])->counter = ((task[i])->counter >> 1) +
                                      (task[i])->priority;
-                printk("SET [PID = %d COUNTER = %d]\n", i, task[i]->counter);
+                // printk("SET [PID = %d COUNTER = %d]\n", i, task[i]->counter);
             }
         }
     }
-    printk("switch to [PID = %d COUNTER = %d]\n", next, task[next]->counter);
+    // printk("switch to [PID = %d COUNTER = %d]\n", next, task[next]->counter);
     switch_to(task[next]);
 }
 #endif
